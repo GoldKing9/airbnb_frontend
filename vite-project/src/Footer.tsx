@@ -2,13 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 const FooterContainer = styled.div`
-    padding: 20px;
-    background-color: #f7f7f7;
+  padding: 20px;
+  background-color: #f7f7f7;
+  width: 100%; // 너비를 100%로 설정
 `;
 
 const Info = styled.div`
-    font-size: 14px;
-    margin-bottom: 10px;
+  font-size: 14px;
+  margin-bottom: 10px;
 `;
 
 const Footer: React.FC = () => {

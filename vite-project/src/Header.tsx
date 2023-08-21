@@ -2,21 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 
 const HeaderContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 5%;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;  // 추가된 속성
 `;
 
 const Logo = styled.div`
-    font-size: 24px;
-    font-weight: bold;
+  font-size: 24px;
+  font-weight: bold;
 `;
 
 const Navigation = styled.div`
-    display: flex;
-    gap: 20px;
+  display: flex;
+  gap: 20px;
 `;
 
 const Header: React.FC = () => {
