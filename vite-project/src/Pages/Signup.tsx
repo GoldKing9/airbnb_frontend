@@ -128,7 +128,7 @@ const Signup = () => {
 
   const onSubmit = async() => {
     await axios
-    .post('http://13.125.227.17:8080/api/user/signup', {
+    .post('http://13.209.66.30:8080/api/user/signup', {
       email: form.email,
       password: form.password,
       username: form.username,
