@@ -51,11 +51,11 @@ const Signin = () => {
       password: form.password
     })
     .then(function (res) {
-      
-      const { accessToken } = res.data;
+      console.log(res.headers);
+      const accessToken  = res.headers.authorization.split(' ')[1];
 
-      if (res.data.accessToken) {
-        setCookie("accessToken", `JWT ${res.data.accessToken}`, {
+      if (accessToken) {
+        setCookie("accessToken", `JWT ${accessToken}`, {
           path: "/",
           sameSite: "strict",
         });
