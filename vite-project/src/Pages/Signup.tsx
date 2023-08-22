@@ -127,8 +127,8 @@ const Signup = () => {
   }, 800);
 
   const onSubmit = async() => {
-    return await axios
-    .post('http://3.34.48.249:8080/api/user/signup', {
+    await axios
+    .post('http://13.125.227.17:8080/api/user/signup', {
       email: form.email,
       password: form.password,
       username: form.username,
@@ -136,7 +136,13 @@ const Signup = () => {
     })
     .then(function (res) {
       console.log(res);
+      alert("회원가입이 완료되었습니다.");
+      // 로그인 렌더링 활성화 시켜줄 코드 들어가야함.
     })
+    .catch(function (error) {
+      console.log(error);
+      alert(error);
+    });
   }
 
   return (
@@ -154,20 +160,20 @@ const Signup = () => {
           </ModalHeader>
           <ModalForm>
             <ModalH1>내집어때</ModalH1>
-            <ModalInput placeholder='이메일' type='email' onChange={isValidEmail}/>
-            <ModalInputMessage>{message.formEmailMessage}</ModalInputMessage>
-            <ModalInput placeholder='비밀번호' type='password' onChange={isValidPassword}/>
-            <ModalInputMessage>{message.formPasswordMessage}</ModalInputMessage>
-            <ModalInput placeholder='이름' type='name' onChange={isValidUsername}/>
-            <ModalInputMessage>{message.formUsernameMessage}</ModalInputMessage>
-            <ModalInput placeholder='생년월일 8자' type='birth' onChange={isValidBirth}/>
-            <ModalInputMessage>{message.formBirthMessage}</ModalInputMessage>
+            <ModalInput placeholder='이메일' type='email' onChange={isValidEmail} color={isValid.isValidEmail}/>
+            <ModalInputMessage color={isValid.isValidEmail}>{message.formEmailMessage}</ModalInputMessage>
+            <ModalInput placeholder='비밀번호' type='password' onChange={isValidPassword} color={isValid.isValidPassword}/>
+            <ModalInputMessage color={isValid.isValidPassword}>{message.formPasswordMessage}</ModalInputMessage>
+            <ModalInput placeholder='이름' type='name' onChange={isValidUsername} color={isValid.isValidUsername}/>
+            <ModalInputMessage color={isValid.isValidUsername}>{message.formUsernameMessage}</ModalInputMessage>
+            <ModalInput placeholder='생년월일 8자' type='birth' onChange={isValidBirth} color={isValid.isValidBirth}/>
+            <ModalInputMessage color={isValid.isValidBirth}>{message.formBirthMessage}</ModalInputMessage>
             <ModalSubmit 
               disabled={isValid.isValidEmail && isValid.isValidPassword && isValid.isValidUsername && isValid.isValidBirth ? false : true}
               onClick={onSubmit}
             >가입 완료
             </ModalSubmit>
-            <ModalSigninPath>로그인 하기</ModalSigninPath>
+            <ModalSigninPath>로그인 하기</ModalSigninPath>  {/*로그인 페이지 렌더링하는 코드 넣어줘야함. */}
           </ModalForm>
         </ModalView>
       </ModalBackdrop>
@@ -246,7 +252,7 @@ const ModalForm = styled.div`
   }
 `;
 
-const ModalInput = styled.input.attrs({ required: true })`
+const ModalInput = styled.input.attrs<{ color?: boolean }>({ required: true })`
   display: block;
   width: 406px;
   height: 50px;
@@ -256,17 +262,18 @@ const ModalInput = styled.input.attrs({ required: true })`
   text-indent: 12px;
   
   &:focus {
-    border: 2px green solid;
+    border: ${(props) => props.color ? '2px solid green' : '2px solid red'};
     outline: none;
   }
 `;
 
-const ModalInputMessage = styled.p`
+const ModalInputMessage = styled.p<{ color?: boolean }>`
   font-size: 10px;
   height: 12px;
   margin: 6px 0;
   font-family: 'Single Day', cursive;
   width: 380px;
+  color: ${(props) => props.color ? 'green' : 'red'};
 `
 
 const ModalH1 = styled.h1`
