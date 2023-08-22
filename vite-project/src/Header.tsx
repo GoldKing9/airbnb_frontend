@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBars, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const HeaderContainer = styled.div`
@@ -115,7 +117,6 @@ const SearchSection = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;  // 내용을 섹션 중앙에 배치
-  border-right: 1px solid #DDDDDD;
   white-space: nowrap;  // 줄바꿈 방지
 
   &:last-child {
@@ -159,12 +160,26 @@ const HostButton = styled.button`
 `;
 
 
+const Modal = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+`;
+
 const Header: React.FC = () => {
+    const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+
     return (
         <HeaderContainer>
-            <Logo>Airbnb</Logo>
+            <Logo onClick={() => navigate('/')}>Airbnb</Logo>
             <Navigation>
-                <SearchButton>
+                <SearchButton onClick={() => setShowModal(true)}>
                     <SearchSection><strong>어디든지</strong></SearchSection>
                     <SearchSection><strong>언제든 일주일</strong></SearchSection>
                     <NoBorderSearchSection>게스트 추가</NoBorderSearchSection>
@@ -172,12 +187,26 @@ const Header: React.FC = () => {
                         <SearchIcon icon={faSearch} />
                     </SearchIconSection>
                 </SearchButton>
-                <HostButton>당신의 공간을 에어비앤비하세요</HostButton>
-                <ProfileButton>
+                <HostButton onClick={() => navigate('/Host')}>당신의 공간을 에어비앤비하세요</HostButton>
+                <ProfileButton onClick={() => {
+                    // 여기에 로그인 유효성 검사 로직을 추가하세요.
+                    const isLoggedIn = true;  // 예시로 true를 설정했습니다.
+                    if (isLoggedIn) {
+                        navigate('/Profile');
+                    } else {
+                        navigate('/Login');
+                    }
+                }}>
                     <HamburgerIcon icon={faBars} />
                     <UserIcon icon={faUser} />
                 </ProfileButton>
             </Navigation>
+            {showModal && (
+                <Modal>
+                    <p>이것은 임시 모달입니다.</p>
+                    <button onClick={() => setShowModal(false)}>닫기</button>
+                </Modal>
+            )}
         </HeaderContainer>
     );
 };
