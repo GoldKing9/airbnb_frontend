@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBars, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-
-
+import SearchModal from "./SearchModal";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -159,18 +158,6 @@ const HostButton = styled.button`
   }
 `;
 
-
-const Modal = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-`;
-
 const Header: React.FC = () => {
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
@@ -190,7 +177,7 @@ const Header: React.FC = () => {
                 <HostButton onClick={() => navigate('/Host')}>당신의 공간을 에어비앤비하세요</HostButton>
                 <ProfileButton onClick={() => {
                     // 여기에 로그인 유효성 검사 로직을 추가하세요.
-                    const isLoggedIn = true;  // 예시로 true를 설정했습니다.
+                    const isLoggedIn = true;
                     if (isLoggedIn) {
                         navigate('/Profile');
                     } else {
@@ -202,10 +189,7 @@ const Header: React.FC = () => {
                 </ProfileButton>
             </Navigation>
             {showModal && (
-                <Modal>
-                    <p>이것은 임시 모달입니다.</p>
-                    <button onClick={() => setShowModal(false)}>닫기</button>
-                </Modal>
+                <SearchModal show={showModal} onClose={() => setShowModal(false)} />
             )}
         </HeaderContainer>
     );
