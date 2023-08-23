@@ -46,13 +46,13 @@ const Signin = () => {
 
   const onSubmit = async() => {
     await axios
-    .post('http://13.209.66.30:8080/api/user/login', {
+    .post('http://43.201.23.80:8080/api/user/login', {
       email: form.email,
       password: form.password
     })
     .then(function (res) {
       console.log(res.headers);
-      const accessToken  = res.headers.authorization.split(' ')[1];
+      const accessToken  = res.headers.authorization;
 
       if (accessToken) {
         setCookie("accessToken", `JWT ${accessToken}`, {
