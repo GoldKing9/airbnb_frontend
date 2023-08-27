@@ -6,6 +6,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 
+const fetchSearchResults = async (query: string) => {
+    try {
+        const response = await fetch(query);
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error("Error fetching search results:", error);
+    }
+};
+
 const ModalHeader = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -66,6 +76,11 @@ const CloseButton = styled.button`
   color: #000000;
 `;
 
+
+const StyledSliderContainer = styled.div`
+  padding: 0 20px; // 양쪽에 20px 패딩 추가
+`;
+
 const StyledSlider = styled(Slider)`
   width: 100%;
   height: 25px;
@@ -86,6 +101,25 @@ const StyledSlider = styled(Slider)`
   }
 `;
 
+const AdjustButton = styled.button`
+  padding: 5px 10px;
+  margin: 0 5px;
+`;
+
+type NumberButtonProps = {
+    selected: boolean;
+};
+
+const NumberButton = styled.button<NumberButtonProps>`
+  padding: 5px 10px;
+  margin: 0 5px;
+  background-color: ${props => props.selected ? '#333' : '#fff'};
+  color: ${props => props.selected ? '#fff' : '#333'};
+  border: 1px solid #333;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+
 const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => void }> = ({isOpen, setIsOpen}) => {
     const [price, setPrice] = useState<[number, number]>([0, 1000]);
     const [address, setAddress] = useState<string>('');
@@ -95,6 +129,12 @@ const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => voi
     const [beds, setBeds] = useState<number>(1);
     const [bathrooms, setBathrooms] = useState<number>(1);
     const [rooms, setRooms] = useState<number>(1);
+
+    const handleSearch = () => {
+        const baseURL = "http://3.39.233.168:8080/api/accommodation/search";
+        const query = `${baseURL}?page=1&size=10&mainAddress=${address}&checkIn=${startDate?.toISOString().split('T')[0]}&checkOut=${endDate?.toISOString().split('T')[0]}&minPrice=${price[0]}&maxPrice=${price[1]}&bedroom=${rooms}&bathroom=${bathrooms}&bed=${beds}&guest=${guests}`;
+        fetchSearchResults(query);
+    };
 
     return isOpen ? (
         <Overlay onClick={() => setIsOpen(false)}>
@@ -106,12 +146,14 @@ const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => voi
                 </ModalHeader>
                 <ModalBody>
                     <InputContainer>
-                        <StyledSlider
-                            value={price}
-                            onChange={value => setPrice(value as [number, number])}
-                            min={0}
-                            max={1000}
-                        />
+                        <StyledSliderContainer>
+                            <StyledSlider
+                                value={price}
+                                onChange={value => setPrice(value as [number, number])}
+                                min={0}
+                                max={1000}
+                            />
+                        </StyledSliderContainer>
                         <PriceRange>{`₩${price[0]} - ₩${price[1]}`}</PriceRange>
                     </InputContainer>
                     <LabelContainer>
@@ -142,45 +184,47 @@ const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => voi
                     </LabelContainer>
                     <LabelContainer>
                         <label>인원 수:</label>
-                        <input
-                            type="number"
-                            value={guests}
-                            onChange={e => setGuests(Number(e.target.value))}
-                            min={1}
-                            max={10}
-                        />
+                        <AdjustButton onClick={() => setGuests(prev => Math.max(1, prev - 1))}>-</AdjustButton>
+                        {guests}
+                        <AdjustButton onClick={() => setGuests(prev => Math.min(10, prev + 1))}>+</AdjustButton>
                     </LabelContainer>
                     <LabelContainer>
                         <label>침대 개수:</label>
-                        <input
-                            type="number"
-                            value={beds}
-                            onChange={e => setBeds(Number(e.target.value))}
-                            min={1}
-                        />
+                        {[...Array(11)].map((_, idx) => (
+                            <NumberButton
+                                key={idx}
+                                onClick={() => setBeds(idx)}
+                                selected={beds === idx}
+                            >
+                                {idx}
+                            </NumberButton>
+                        ))}
                     </LabelContainer>
                     <LabelContainer>
                         <label>욕실 개수:</label>
-                        <input
-                            type="number"
-                            value={bathrooms}
-                            onChange={e => setBathrooms(Number(e.target.value))}
-                            min={1}
-                        />
+                        {[...Array(11)].map((_, idx) => (
+                            <NumberButton
+                                key={idx}
+                                onClick={() => setBathrooms(idx)}
+                                selected={bathrooms === idx}
+                            >
+                                {idx}
+                            </NumberButton>
+                        ))}
                     </LabelContainer>
                     <LabelContainer>
                         <label>방 개수:</label>
-                        <input
-                            type="number"
-                            value={rooms}
-                            onChange={e => setRooms(Number(e.target.value))}
-                            min={1}
-                        />
+                        {[...Array(11)].map((_, idx) => (
+                            <NumberButton
+                                key={idx}
+                                onClick={() => setRooms(idx)}
+                                selected={rooms === idx}
+                            >
+                                {idx}
+                            </NumberButton>
+                        ))}
                     </LabelContainer>
-                    <button onClick={() => {
-                        // 검색 로직을 여기에 구현합니다.
-                    }}>검색
-                    </button>
+                    <button onClick={handleSearch}>검색</button>
                 </ModalBody>
             </ModalContainer>
         </Overlay>
