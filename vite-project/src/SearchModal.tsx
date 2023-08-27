@@ -5,6 +5,8 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
+import './datepicker-overrides.css';
+
 
 const fetchSearchResults = async (query: string) => {
     try {
@@ -23,8 +25,15 @@ const ModalHeader = styled.div`
   position: relative;
 `;
 
+const StyledInput = styled.input`
+  &:focus {
+    border-color: #222222;
+    outline: none;
+  }
+`;
+
 const ModalBody = styled.div`
-  padding: 20px;
+  padding: 20px 100px;
 `;
 
 const PriceRange = styled.div`
@@ -37,6 +46,7 @@ const LabelContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 10px 0;
 `;
 
 const InputContainer = styled.div`
@@ -74,11 +84,9 @@ const CloseButton = styled.button`
   font-size: 20px;
   cursor: pointer;
   color: #000000;
-`;
-
-
-const StyledSliderContainer = styled.div`
-  padding: 0 20px; // 양쪽에 20px 패딩 추가
+  &:active {
+    outline: none;
+  }
 `;
 
 const StyledSlider = styled(Slider)`
@@ -104,6 +112,11 @@ const StyledSlider = styled(Slider)`
 const AdjustButton = styled.button`
   padding: 5px 10px;
   margin: 0 5px;
+  outline: none;
+  &:focus, &:hover {
+    border-color: #222222;
+    outline: none;
+  }
 `;
 
 type NumberButtonProps = {
@@ -118,10 +131,23 @@ const NumberButton = styled.button<NumberButtonProps>`
   border: 1px solid #333;
   border-radius: 5px;
   cursor: pointer;
+  outline: none;
+  &:focus, &:hover {
+    border-color: #222222;
+    outline: none;
+  }
+`;
+
+const StyledSearchButton = styled.button`
+  margin: 50px 0;  // 세로 패딩 추가
+  &:focus, &:hover {
+    border-color: #222222;
+    outline: none;
+  }
 `;
 
 const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => void }> = ({isOpen, setIsOpen}) => {
-    const [price, setPrice] = useState<[number, number]>([0, 1000]);
+    const [price, setPrice] = useState<[number, number]>([0, 1000000]);
     const [address, setAddress] = useState<string>('');
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
@@ -132,9 +158,21 @@ const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => voi
 
     const handleSearch = () => {
         const baseURL = "http://3.39.233.168:8080/api/accommodation/search";
-        const query = `${baseURL}?page=1&size=10&mainAddress=${address}&checkIn=${startDate?.toISOString().split('T')[0]}&checkOut=${endDate?.toISOString().split('T')[0]}&minPrice=${price[0]}&maxPrice=${price[1]}&bedroom=${rooms}&bathroom=${bathrooms}&bed=${beds}&guest=${guests}`;
+        let query = `${baseURL}?page=1&size=10&mainAddress=${address}&minPrice=${price[0]}&maxPrice=${price[1]}&bedroom=${rooms}&bathroom=${bathrooms}&bed=${beds}&guest=${guests}`;
+
+        // startDate와 endDate가 설정되어 있을 때만 checkIn 및 checkOut 쿼리 파라미터를 추가
+        if (startDate) {
+            query += `&checkIn=${startDate.toISOString().split('T')[0]}`;
+        }
+        if (endDate) {
+            query += `&checkOut=${endDate.toISOString().split('T')[0]}`;
+        }
+
+        console.log(query); // 현재 검색 조건을 기반으로 한 query 출력
         fetchSearchResults(query);
+        setIsOpen(false); // 모달 닫기
     };
+
 
     return isOpen ? (
         <Overlay onClick={() => setIsOpen(false)}>
@@ -146,19 +184,17 @@ const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => voi
                 </ModalHeader>
                 <ModalBody>
                     <InputContainer>
-                        <StyledSliderContainer>
                             <StyledSlider
                                 value={price}
                                 onChange={value => setPrice(value as [number, number])}
                                 min={0}
-                                max={1000}
+                                max={1000000}
                             />
-                        </StyledSliderContainer>
                         <PriceRange>{`₩${price[0]} - ₩${price[1]}`}</PriceRange>
                     </InputContainer>
                     <LabelContainer>
                         <label>주소:</label>
-                        <input
+                        <StyledInput
                             type="text"
                             value={address}
                             onChange={e => setAddress(e.target.value)}
@@ -196,7 +232,7 @@ const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => voi
                                 onClick={() => setBeds(idx)}
                                 selected={beds === idx}
                             >
-                                {idx}
+                                {idx === 0 ? "상관없음" : idx === 10 ? "10+" : idx}
                             </NumberButton>
                         ))}
                     </LabelContainer>
@@ -208,7 +244,7 @@ const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => voi
                                 onClick={() => setBathrooms(idx)}
                                 selected={bathrooms === idx}
                             >
-                                {idx}
+                                {idx === 0 ? "상관없음" : idx === 10 ? "10+" : idx}
                             </NumberButton>
                         ))}
                     </LabelContainer>
@@ -220,15 +256,14 @@ const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => voi
                                 onClick={() => setRooms(idx)}
                                 selected={rooms === idx}
                             >
-                                {idx}
+                                {idx === 0 ? "상관없음" : idx === 10 ? "10+" : idx}
                             </NumberButton>
                         ))}
                     </LabelContainer>
-                    <button onClick={handleSearch}>검색</button>
+                    <StyledSearchButton onClick={handleSearch}>검색</StyledSearchButton>
                 </ModalBody>
             </ModalContainer>
         </Overlay>
-
     ) : null;
 };
 
