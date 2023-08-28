@@ -189,7 +189,7 @@ const Header: React.FC = () => {
                 </ProfileButton>
             </Navigation>
             {showModal && (
-                <SearchModal show={showModal} onClose={() => setShowModal(false)} />
+                <SearchModal isOpen={showModal} setIsOpen={setShowModal} />
             )}
         </HeaderContainer>
     );
