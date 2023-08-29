@@ -1,9 +1,9 @@
 import './App.css'
 import {BrowserRouter as Router, Route, Routes, Outlet} from 'react-router-dom';
 import Show from "./pages/Show.tsx";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import GlobalStyle from "./GlobalStyle";
-import Header from "./components/Header.tsx";
-import Footer from "./components/Footer.tsx";
 import styled from "styled-components";
 
 function Layout () {

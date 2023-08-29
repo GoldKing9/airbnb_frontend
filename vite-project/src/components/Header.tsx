@@ -6,12 +6,23 @@ import {useNavigate} from 'react-router-dom';
 import SearchModal from "./SearchModal.tsx";
 import {getCookie} from '../utils/Cookies';
 import Signin from "./Signin.tsx";
+import Signup from "./Signup.tsx";
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const [showSignupModal, setShowSignupModal] = useState(false);
 
+    const switchToSignup = () => {
+        setShowLoginModal(false);
+        setShowSignupModal(true);
+    };
+
+    const switchToSignin =() => {
+        setShowSignupModal(false);
+        setShowLoginModal(true);
+    }
 
     return (
         <HeaderContainer>
@@ -42,7 +53,8 @@ const Header: React.FC = () => {
             {showModal && (
                 <SearchModal isOpen={showModal} setIsOpen={setShowModal}/>
             )}
-            {showLoginModal && <Signin/>}
+            {showLoginModal && <Signin switchToSignup={switchToSignup} />}
+            {showSignupModal && <Signup switchToSignin={switchToSignin}/>}
         </HeaderContainer>
     );
 };

@@ -5,8 +5,11 @@ import { faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { setCookie } from '../utils/Cookies.ts'
 
-const Signin = () => {
-  
+interface SigninProps {
+  switchToSignup: () => void;
+}
+
+const Signin: React.FC<SigninProps> = ({ switchToSignup }) => {
   interface form {
     email: null | string;
     password: null | string;
@@ -60,9 +63,7 @@ const Signin = () => {
           sameSite: "strict",
         });
       }
-
       axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-
       console.log(res);
       alert("로그인에 성공했습니다.");
     })
@@ -92,7 +93,7 @@ const Signin = () => {
             <ModalInput placeholder='이메일' type='email' onChange={handleEmail}/>
             <ModalInput placeholder='비밀번호' type='password' onChange={handlePassword}/>
             <ModalSubmit onClick={onSubmit}>로그인</ModalSubmit>
-            <ModalSignupPath>회원가입 하기</ModalSignupPath>  {/*회원가입 페이지 렌더링하는 코드 넣어줘야함. */}
+            <ModalSignupPath onClick={switchToSignup}>회원가입 하기</ModalSignupPath>
           </ModalForm>
         </ModalView>
       </ModalBackdrop>
@@ -109,7 +110,6 @@ const ModalContainer = styled.div`
   position: fixed; // 3. 띄우고
   top: 0;
   left: 0;
-  
   box-sizing: border-box;
 `;
 
@@ -130,7 +130,7 @@ const ModalView = styled.div`
   width: 500px;   
   height: 700px; 
   margin: auto;
-  padding: 0px 0px 24px;   
+  padding: 0 0 24px;   
   border-radius: 20px;
   background-color: white;
   z-index: 10000;
@@ -145,7 +145,7 @@ const ModalHeader = styled.div`
 `;
 
 const ModalHeaderDiv = styled.div`
-  margin: zero;
+  margin: 0;
   flex: 1;
 `;
 
@@ -171,10 +171,6 @@ const ModalForm = styled.div`
   flex-direction: column;
   padding: 0 96px;
   align-items: center;
-
-  & > h1 {
-    align-items: left;
-  }
 
   input {
     &:nth-child(2) {
@@ -221,14 +217,14 @@ const ModalSubmit = styled.button`
   border-radius: 8px;
   color: white;
   font-size: 20px;
-  pointer: cursor;
+  cursor: pointer;
 `;
 
 const ModalSignupPath = styled.div`
   text-decoration: none;
   color: #fc335a;
   margin-top: 60px;
-  pointer: cursor;
+  cursor: pointer;
 ` 
 
 

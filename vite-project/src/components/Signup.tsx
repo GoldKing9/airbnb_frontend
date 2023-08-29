@@ -4,7 +4,11 @@ import { faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 
-const Signup = () => {
+interface SignupProps {
+  switchToSignin: () => void;
+}
+
+const Signup: React.FC<SignupProps> = ({ switchToSignin }) => {
   
   interface form {
     email: null | string;
@@ -155,7 +159,7 @@ const Signup = () => {
                 <StyledFontAwesomeIcon icon={faX}/>
               </CloseButton>
             </ModalHeaderDiv>
-            <SignupHeader>회원 가입</SignupHeader>
+            <SignupHeader>회원가입</SignupHeader>
             <ModalHeaderDiv></ModalHeaderDiv>
           </ModalHeader>
           <ModalForm>
@@ -169,11 +173,11 @@ const Signup = () => {
             <ModalInput placeholder='생년월일 8자' type='birth' onChange={isValidBirth} color={isValid.isValidBirth}/>
             <ModalInputMessage color={isValid.isValidBirth}>{message.formBirthMessage}</ModalInputMessage>
             <ModalSubmit 
-              disabled={isValid.isValidEmail && isValid.isValidPassword && isValid.isValidUsername && isValid.isValidBirth ? false : true}
+              disabled={!(isValid.isValidEmail && isValid.isValidPassword && isValid.isValidUsername && isValid.isValidBirth)}
               onClick={onSubmit}
             >가입 완료
             </ModalSubmit>
-            <ModalSigninPath>로그인 하기</ModalSigninPath>  {/*로그인 페이지 렌더링하는 코드 넣어줘야함. */}
+            <ModalSigninPath onClick={switchToSignin}>로그인 하기</ModalSigninPath>
           </ModalForm>
         </ModalView>
       </ModalBackdrop>
@@ -184,11 +188,12 @@ const Signup = () => {
 const ModalContainer = styled.div`
   width: 100vw;
   height: 100vh;
-  top: 0;
-  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
   box-sizing: border-box;
 `;
 
@@ -209,7 +214,7 @@ const ModalView = styled.div`
   width: 500px;   
   height: 700px;  
   margin: auto;
-  padding: 0px 0px 24px;   
+  padding: 0 0 24px;   
   border-radius: 20px;
   background-color: white;
   z-index: 10000;
@@ -299,14 +304,14 @@ const ModalSubmit = styled.button`
   border-radius: 8px;
   color: white;
   font-size: 20px;
-  pointer: cursor;
+  cursor: pointer;
 `;
 
 const ModalSigninPath = styled.div`
   text-decoration: none;
   color: #fc335a;
   margin-top: 60px;
-  pointer: cursor;
+  cursor: pointer;
 ` 
 
 export default Signup;
