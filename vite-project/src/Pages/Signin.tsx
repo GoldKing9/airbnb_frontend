@@ -46,7 +46,7 @@ const Signin = () => {
 
   const onSubmit = async() => {
     await axios
-    .post('http://43.201.23.80:8080/api/user/login', {
+    .post('http://3.39.233.168:8080/api/user/login', {
       email: form.email,
       password: form.password
     })
