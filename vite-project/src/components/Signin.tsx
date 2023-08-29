@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { setCookie } from '../utils/Cookies'
+import { setCookie } from '../utils/Cookies.ts'
 
 const Signin = () => {
   
@@ -64,8 +64,7 @@ const Signin = () => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
       console.log(res);
-      alert("로그인에 성공했습니다.");    
-      // 메인페이지로 이동시켜주는 코드
+      alert("로그인에 성공했습니다.");
     })
     .catch(function (error) {
       console.log(error);
@@ -103,18 +102,20 @@ const Signin = () => {
 
 const ModalContainer = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: 100vh;  // 1. 전체 화면
+  display: flex;  // 2. ModalView 중앙으로 모셔오고
+  justify-content: center;  // 2
+  align-items: center;    // 2 
+  position: fixed; // 3. 띄우고
   top: 0;
   left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  
   box-sizing: border-box;
 `;
 
 const ModalBackdrop = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100%; // 이미 꽉 차서 중앙이 의미가 없지!
   top: 0;
   left: 0;
   position: fixed;
@@ -127,7 +128,7 @@ const ModalBackdrop = styled.div`
 
 const ModalView = styled.div`
   width: 500px;   
-  height: 700px;  
+  height: 700px; 
   margin: auto;
   padding: 0px 0px 24px;   
   border-radius: 20px;

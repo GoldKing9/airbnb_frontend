@@ -18,6 +18,132 @@ const fetchSearchResults = async (query: string) => {
     }
 };
 
+type NumberButtonProps = {
+    selected: boolean;
+};
+
+const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => void }> = ({isOpen, setIsOpen}) => {
+    const [price, setPrice] = useState<[number, number]>([0, 1000000]);
+    const [address, setAddress] = useState<string>('');
+    const [startDate, setStartDate] = useState<Date | null>(null);
+    const [endDate, setEndDate] = useState<Date | null>(null);
+    const [guests, setGuests] = useState<number>(1);
+    const [beds, setBeds] = useState<number>(1);
+    const [bathrooms, setBathrooms] = useState<number>(1);
+    const [rooms, setRooms] = useState<number>(1);
+
+    const handleSearch = () => {
+        const baseURL = "http://3.39.233.168:8080/api/accommodation/search";
+        let query = `${baseURL}?page=1&size=10&mainAddress=${address}&minPrice=${price[0]}&maxPrice=${price[1]}&bedroom=${rooms}&bathroom=${bathrooms}&bed=${beds}&guest=${guests}`;
+
+        // startDate와 endDate가 설정되어 있을 때만 checkIn 및 checkOut 쿼리 파라미터를 추가
+        if (startDate) {
+            query += `&checkIn=${startDate.toISOString().split('T')[0]}`;
+        }
+        if (endDate) {
+            query += `&checkOut=${endDate.toISOString().split('T')[0]}`;
+        }
+
+        console.log(query); // 현재 검색 조건을 기반으로 한 query 출력
+        fetchSearchResults(query);
+        setIsOpen(false); // 모달 닫기
+    };
+
+    return isOpen ? (
+        <Overlay onClick={() => setIsOpen(false)}>
+            <ModalContainer onClick={e => e.stopPropagation()}>
+                <ModalHeader>
+                    <CloseButton onClick={() => setIsOpen(false)}>
+                        <FontAwesomeIcon icon={faTimes}/> {/* X 문자 대신 아이콘 사용 */}
+                    </CloseButton>
+                </ModalHeader>
+                <ModalBody>
+                    <InputContainer>
+                            <StyledSlider
+                                value={price}
+                                onChange={value => setPrice(value as [number, number])}
+                                min={0}
+                                max={1000000}
+                            />
+                        <PriceRange>{`₩${price[0]} - ₩${price[1]}`}</PriceRange>
+                    </InputContainer>
+                    <LabelContainer>
+                        <label>주소:</label>
+                        <StyledInput
+                            type="text"
+                            value={address}
+                            onChange={e => setAddress(e.target.value)}
+                        />
+                    </LabelContainer>
+                    <LabelContainer>
+                        <label>머물 수 있는 날짜:</label>
+                        <DatePicker
+                            selected={startDate}
+                            onChange={date => setStartDate(date)}
+                            selectsStart
+                            startDate={startDate}
+                            endDate={endDate}
+                        />
+                        <DatePicker
+                            selected={endDate}
+                            onChange={date => setEndDate(date)}
+                            selectsEnd
+                            startDate={startDate}
+                            endDate={endDate}
+                            minDate={startDate}
+                        />
+                    </LabelContainer>
+                    <LabelContainer>
+                        <label>인원 수:</label>
+                        <AdjustButton onClick={() => setGuests(prev => Math.max(1, prev - 1))}>-</AdjustButton>
+                        {guests}
+                        <AdjustButton onClick={() => setGuests(prev => Math.min(10, prev + 1))}>+</AdjustButton>
+                    </LabelContainer>
+                    <LabelContainer>
+                        <label>침대 개수:</label>
+                        {[...Array(11)].map((_, idx) => (
+                            <NumberButton
+                                key={idx}
+                                onClick={() => setBeds(idx)}
+                                selected={beds === idx}
+                            >
+                                {idx === 0 ? "상관없음" : idx === 10 ? "10+" : idx}
+                            </NumberButton>
+                        ))}
+                    </LabelContainer>
+                    <LabelContainer>
+                        <label>욕실 개수:</label>
+                        {[...Array(11)].map((_, idx) => (
+                            <NumberButton
+                                key={idx}
+                                onClick={() => setBathrooms(idx)}
+                                selected={bathrooms === idx}
+                            >
+                                {idx === 0 ? "상관없음" : idx === 10 ? "10+" : idx}
+                            </NumberButton>
+                        ))}
+                    </LabelContainer>
+                    <LabelContainer>
+                        <label>방 개수:</label>
+                        {[...Array(11)].map((_, idx) => (
+                            <NumberButton
+                                key={idx}
+                                onClick={() => setRooms(idx)}
+                                selected={rooms === idx}
+                            >
+                                {idx === 0 ? "상관없음" : idx === 10 ? "10+" : idx}
+                            </NumberButton>
+                        ))}
+                    </LabelContainer>
+                    <StyledSearchButton onClick={handleSearch}>검색</StyledSearchButton>
+                </ModalBody>
+            </ModalContainer>
+        </Overlay>
+    ) : null;
+};
+
+export default SearchModal;
+
 const ModalHeader = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -119,10 +245,6 @@ const AdjustButton = styled.button`
   }
 `;
 
-type NumberButtonProps = {
-    selected: boolean;
-};
-
 const NumberButton = styled.button<NumberButtonProps>`
   padding: 5px 10px;
   margin: 0 5px;
@@ -139,132 +261,9 @@ const NumberButton = styled.button<NumberButtonProps>`
 `;
 
 const StyledSearchButton = styled.button`
-  margin: 50px 0;  // 세로 패딩 추가
+  margin: 50px 0;
   &:focus, &:hover {
     border-color: #222222;
     outline: none;
   }
 `;
-
-const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => void }> = ({isOpen, setIsOpen}) => {
-    const [price, setPrice] = useState<[number, number]>([0, 1000000]);
-    const [address, setAddress] = useState<string>('');
-    const [startDate, setStartDate] = useState<Date | null>(null);
-    const [endDate, setEndDate] = useState<Date | null>(null);
-    const [guests, setGuests] = useState<number>(1);
-    const [beds, setBeds] = useState<number>(1);
-    const [bathrooms, setBathrooms] = useState<number>(1);
-    const [rooms, setRooms] = useState<number>(1);
-
-    const handleSearch = () => {
-        const baseURL = "http://3.39.233.168:8080/api/accommodation/search";
-        let query = `${baseURL}?page=1&size=10&mainAddress=${address}&minPrice=${price[0]}&maxPrice=${price[1]}&bedroom=${rooms}&bathroom=${bathrooms}&bed=${beds}&guest=${guests}`;
-
-        // startDate와 endDate가 설정되어 있을 때만 checkIn 및 checkOut 쿼리 파라미터를 추가
-        if (startDate) {
-            query += `&checkIn=${startDate.toISOString().split('T')[0]}`;
-        }
-        if (endDate) {
-            query += `&checkOut=${endDate.toISOString().split('T')[0]}`;
-        }
-
-        console.log(query); // 현재 검색 조건을 기반으로 한 query 출력
-        fetchSearchResults(query);
-        setIsOpen(false); // 모달 닫기
-    };
-
-
-    return isOpen ? (
-        <Overlay onClick={() => setIsOpen(false)}>
-            <ModalContainer onClick={e => e.stopPropagation()}>
-                <ModalHeader>
-                    <CloseButton onClick={() => setIsOpen(false)}>
-                        <FontAwesomeIcon icon={faTimes}/> {/* X 문자 대신 아이콘 사용 */}
-                    </CloseButton>
-                </ModalHeader>
-                <ModalBody>
-                    <InputContainer>
-                            <StyledSlider
-                                value={price}
-                                onChange={value => setPrice(value as [number, number])}
-                                min={0}
-                                max={1000000}
-                            />
-                        <PriceRange>{`₩${price[0]} - ₩${price[1]}`}</PriceRange>
-                    </InputContainer>
-                    <LabelContainer>
-                        <label>주소:</label>
-                        <StyledInput
-                            type="text"
-                            value={address}
-                            onChange={e => setAddress(e.target.value)}
-                        />
-                    </LabelContainer>
-                    <LabelContainer>
-                        <label>머물 수 있는 날짜:</label>
-                        <DatePicker
-                            selected={startDate}
-                            onChange={date => setStartDate(date)}
-                            selectsStart
-                            startDate={startDate}
-                            endDate={endDate}
-                        />
-                        <DatePicker
-                            selected={endDate}
-                            onChange={date => setEndDate(date)}
-                            selectsEnd
-                            startDate={startDate}
-                            endDate={endDate}
-                            minDate={startDate}
-                        />
-                    </LabelContainer>
-                    <LabelContainer>
-                        <label>인원 수:</label>
-                        <AdjustButton onClick={() => setGuests(prev => Math.max(1, prev - 1))}>-</AdjustButton>
-                        {guests}
-                        <AdjustButton onClick={() => setGuests(prev => Math.min(10, prev + 1))}>+</AdjustButton>
-                    </LabelContainer>
-                    <LabelContainer>
-                        <label>침대 개수:</label>
-                        {[...Array(11)].map((_, idx) => (
-                            <NumberButton
-                                key={idx}
-                                onClick={() => setBeds(idx)}
-                                selected={beds === idx}
-                            >
-                                {idx === 0 ? "상관없음" : idx === 10 ? "10+" : idx}
-                            </NumberButton>
-                        ))}
-                    </LabelContainer>
-                    <LabelContainer>
-                        <label>욕실 개수:</label>
-                        {[...Array(11)].map((_, idx) => (
-                            <NumberButton
-                                key={idx}
-                                onClick={() => setBathrooms(idx)}
-                                selected={bathrooms === idx}
-                            >
-                                {idx === 0 ? "상관없음" : idx === 10 ? "10+" : idx}
-                            </NumberButton>
-                        ))}
-                    </LabelContainer>
-                    <LabelContainer>
-                        <label>방 개수:</label>
-                        {[...Array(11)].map((_, idx) => (
-                            <NumberButton
-                                key={idx}
-                                onClick={() => setRooms(idx)}
-                                selected={rooms === idx}
-                            >
-                                {idx === 0 ? "상관없음" : idx === 10 ? "10+" : idx}
-                            </NumberButton>
-                        ))}
-                    </LabelContainer>
-                    <StyledSearchButton onClick={handleSearch}>검색</StyledSearchButton>
-                </ModalBody>
-            </ModalContainer>
-        </Overlay>
-    ) : null;
-};
-
-export default SearchModal;
