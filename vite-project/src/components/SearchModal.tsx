@@ -6,145 +6,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import './datepicker-overrides.css';
+import axios from 'axios';
 
 
 const fetchSearchResults = async (query: string) => {
     try {
-        const response = await fetch(query);
-        const data = await response.json();
-        console.log(data);
+        const response = await axios.get(query);
+        console.log(response.data);
     } catch (error) {
         console.error("Error fetching search results:", error);
     }
 };
 
-const ModalHeader = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  border-bottom: 1px solid #e0e0e0;
-  position: relative;
-`;
-
-const StyledInput = styled.input`
-  &:focus {
-    border-color: #222222;
-    outline: none;
-  }
-`;
-
-const ModalBody = styled.div`
-  padding: 20px 100px;
-`;
-
-const PriceRange = styled.div`
-  margin-top: 10px;
-  font-size: 14px;
-  text-align: left;
-`;
-
-const LabelContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 0;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 15px;
-`;
-
-const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-`;
-
-const ModalContainer = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70%;
-  height: 80%;
-  background-color: white;
-  border-radius: 10px;
-  z-index: 1000;
-`;
-
-const CloseButton = styled.button`
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: #000000;
-  &:active {
-    outline: none;
-  }
-`;
-
-const StyledSlider = styled(Slider)`
-  width: 100%;
-  height: 25px;
-
-  .thumb {
-    height: 25px;
-    width: 25px;
-    background-color: #fff;
-    border: 1px solid #333;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-
-  .track {
-    top: 12px;
-    background: #333;
-    height: 1px;
-  }
-`;
-
-const AdjustButton = styled.button`
-  padding: 5px 10px;
-  margin: 0 5px;
-  outline: none;
-  &:focus, &:hover {
-    border-color: #222222;
-    outline: none;
-  }
-`;
-
 type NumberButtonProps = {
     selected: boolean;
 };
-
-const NumberButton = styled.button<NumberButtonProps>`
-  padding: 5px 10px;
-  margin: 0 5px;
-  background-color: ${props => props.selected ? '#333' : '#fff'};
-  color: ${props => props.selected ? '#fff' : '#333'};
-  border: 1px solid #333;
-  border-radius: 5px;
-  cursor: pointer;
-  outline: none;
-  &:focus, &:hover {
-    border-color: #222222;
-    outline: none;
-  }
-`;
-
-const StyledSearchButton = styled.button`
-  margin: 50px 0;  // 세로 패딩 추가
-  &:focus, &:hover {
-    border-color: #222222;
-    outline: none;
-  }
-`;
 
 const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => void }> = ({isOpen, setIsOpen}) => {
     const [price, setPrice] = useState<[number, number]>([0, 1000000]);
@@ -173,14 +49,14 @@ const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => voi
         setIsOpen(false); // 모달 닫기
     };
 
-
     return isOpen ? (
         <Overlay onClick={() => setIsOpen(false)}>
             <ModalContainer onClick={e => e.stopPropagation()}>
                 <ModalHeader>
                     <CloseButton onClick={() => setIsOpen(false)}>
-                        <FontAwesomeIcon icon={faTimes}/> {/* X 문자 대신 아이콘 사용 */}
+                        <FontAwesomeIcon icon={faTimes}/>
                     </CloseButton>
+                    <FilterHeader>필터</FilterHeader>
                 </ModalHeader>
                 <ModalBody>
                     <InputContainer>
@@ -268,3 +144,137 @@ const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => voi
 };
 
 export default SearchModal;
+
+const ModalHeader = styled.div`
+  display: flex;
+  justify-content: center;  // 변경된 부분
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+  padding: 20px;
+`;
+
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #000000;
+  position: absolute;
+  left: 20px;
+  &:active {
+    outline: none;
+  }
+`;
+
+const FilterHeader = styled.span`
+  text-align: center;
+  font-weight: 700;
+`;
+
+const StyledSlider = styled(Slider)`
+  width: 100%;
+  height: 25px;
+
+  .thumb {
+    height: 25px;
+    width: 25px;
+    background-color: #fff;
+    border: 1px solid #333;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .track {
+    top: 12px;
+    background: #333;
+    height: 1px;
+  }
+`;
+
+const StyledInput = styled.input`
+  &:focus {
+    border-color: #222222;
+    outline: none;
+  }
+`;
+
+const ModalBody = styled.div`
+  padding: 20px 100px;
+`;
+
+const PriceRange = styled.div`
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: left;
+`;
+
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 15px;
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+`;
+
+const ModalContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 80%;
+  background-color: white;
+  border-radius: 10px;
+  z-index: 1000;
+`;
+
+const AdjustButton = styled.button`
+  padding: 5px 10px;
+  margin: 0 5px;
+  outline: none;
+  &:focus, &:hover {
+    border-color: #222222;
+    outline: none;
+  }
+`;
+
+const NumberButton = styled.button<NumberButtonProps>`
+  padding: 5px 10px;
+  margin: 0 5px;
+  background-color: ${props => props.selected ? '#333' : '#fff'};
+  color: ${props => props.selected ? '#fff' : '#333'};
+  border: 1px solid #333;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  &:focus, &:hover {
+    border-color: #222222;
+    outline: none;
+  }
+`;
+
+const StyledSearchButton = styled.button`
+  margin: 50px 0;
+  padding: 10px 15px;
+  &:focus, &:hover {
+    border-color: #222222;
+    outline: none;
+  }
+`;

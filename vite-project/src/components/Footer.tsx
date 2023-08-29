@@ -1,6 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
+const Footer: React.FC = () => {
+    return (
+        <FooterContainer>
+            <Info>© 2023 내집어때, Inc. All rights reserved</Info>
+            <div>
+                <span>Privacy</span> · <span>Terms</span> · <span>Sitemap</span>
+            </div>
+        </FooterContainer>
+    );
+};
+
 const FooterContainer = styled.div`
   padding: 10px;
   background-color: #ffffff;
@@ -13,16 +24,5 @@ const Info = styled.div`
   margin-bottom: 10px;
   color: #222222;
 `;
-
-const Footer: React.FC = () => {
-    return (
-        <FooterContainer>
-            <Info>© 2023 내집어때, Inc. All rights reserved</Info>
-            <div>
-                <span>Privacy</span> · <span>Terms</span> · <span>Sitemap</span>
-            </div>
-        </FooterContainer>
-    );
-};
 
 export default Footer;
