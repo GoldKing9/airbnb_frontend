@@ -54,8 +54,9 @@ const SearchModal: React.FC<{ isOpen: boolean, setIsOpen: (open: boolean) => voi
             <ModalContainer onClick={e => e.stopPropagation()}>
                 <ModalHeader>
                     <CloseButton onClick={() => setIsOpen(false)}>
-                        <FontAwesomeIcon icon={faTimes}/> {/* X 문자 대신 아이콘 사용 */}
+                        <FontAwesomeIcon icon={faTimes}/>
                     </CloseButton>
+                    <FilterHeader>필터</FilterHeader>
                 </ModalHeader>
                 <ModalBody>
                     <InputContainer>
@@ -146,9 +147,49 @@ export default SearchModal;
 
 const ModalHeader = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;  // 변경된 부분
+  align-items: center;
   border-bottom: 1px solid #e0e0e0;
   position: relative;
+  padding: 20px;
+`;
+
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #000000;
+  position: absolute;
+  left: 20px;
+  &:active {
+    outline: none;
+  }
+`;
+
+const FilterHeader = styled.span`
+  text-align: center;
+  font-weight: 700;
+`;
+
+const StyledSlider = styled(Slider)`
+  width: 100%;
+  height: 25px;
+
+  .thumb {
+    height: 25px;
+    width: 25px;
+    background-color: #fff;
+    border: 1px solid #333;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .track {
+    top: 12px;
+    background: #333;
+    height: 1px;
+  }
 `;
 
 const StyledInput = styled.input`
@@ -204,37 +245,6 @@ const ModalContainer = styled.div`
   z-index: 1000;
 `;
 
-const CloseButton = styled.button`
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: #000000;
-  &:active {
-    outline: none;
-  }
-`;
-
-const StyledSlider = styled(Slider)`
-  width: 100%;
-  height: 25px;
-
-  .thumb {
-    height: 25px;
-    width: 25px;
-    background-color: #fff;
-    border: 1px solid #333;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-
-  .track {
-    top: 12px;
-    background: #333;
-    height: 1px;
-  }
-`;
-
 const AdjustButton = styled.button`
   padding: 5px 10px;
   margin: 0 5px;
@@ -262,6 +272,7 @@ const NumberButton = styled.button<NumberButtonProps>`
 
 const StyledSearchButton = styled.button`
   margin: 50px 0;
+  padding: 10px 15px;
   &:focus, &:hover {
     border-color: #222222;
     outline: none;

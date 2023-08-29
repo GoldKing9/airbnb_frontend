@@ -10,9 +10,18 @@ import Signup from "./Signup.tsx";
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
-    const [showModal, setShowModal] = useState(false);
+    const [showSearchModal, setShowSearchModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showSignupModal, setShowSignupModal] = useState(false);
+
+    const closeSignupModal = () => {
+        setShowSignupModal(false);
+    };
+
+    const closeSigninModal = () => {
+        setShowLoginModal(false);
+    };
+
 
     const switchToSignup = () => {
         setShowLoginModal(false);
@@ -28,7 +37,7 @@ const Header: React.FC = () => {
         <HeaderContainer>
             <Logo onClick={() => navigate('/')}>Airbnb</Logo>
             <Navigation>
-                <SearchButton onClick={() => setShowModal(true)}>
+                <SearchButton onClick={() => setShowSearchModal(true)}>
                     <SearchSection><strong>어디든지</strong></SearchSection>
                     <SearchSection><strong>언제든 일주일</strong></SearchSection>
                     <NoBorderSearchSection>게스트 추가</NoBorderSearchSection>
@@ -50,11 +59,11 @@ const Header: React.FC = () => {
                     <UserIcon icon={faUser}/>
                 </ProfileButton>
             </Navigation>
-            {showModal && (
-                <SearchModal isOpen={showModal} setIsOpen={setShowModal}/>
+            {showSearchModal && (
+                <SearchModal isOpen={showSearchModal} setIsOpen={setShowSearchModal}/>
             )}
-            {showLoginModal && <Signin switchToSignup={switchToSignup} />}
-            {showSignupModal && <Signup switchToSignin={switchToSignin}/>}
+            {showLoginModal && <Signin switchToSignup={switchToSignup} setIsOpen={closeSigninModal}/>}
+            {showSignupModal && <Signup switchToSignin={switchToSignin} setIsOpen={closeSignupModal}/>}
         </HeaderContainer>
     );
 };
@@ -166,11 +175,11 @@ const SearchButton = styled.button`
 `;
 
 const SearchSection = styled.div`
-  flex: 0.5; // 각 섹션의 너비를 동일하게 설정
+  flex: 0.5;
   display: flex;
   align-items: center;
-  justify-content: center; // 내용을 섹션 중앙에 배치
-  white-space: nowrap; // 줄바꿈 방지
+  justify-content: center;
+  white-space: nowrap;
 
   &:last-child {
     border-right: none;
