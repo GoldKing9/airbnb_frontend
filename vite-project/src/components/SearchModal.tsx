@@ -6,13 +6,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import './datepicker-overrides.css';
+import axios from 'axios';
 
 
 const fetchSearchResults = async (query: string) => {
     try {
-        const response = await fetch(query);
-        const data = await response.json();
-        console.log(data);
+        const response = await axios.get(query);
+        console.log(response.data);
     } catch (error) {
         console.error("Error fetching search results:", error);
     }
