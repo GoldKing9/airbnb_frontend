@@ -128,7 +128,7 @@ const Signup = () => {
 
   const onSubmit = async() => {
     await axios
-    .post('http://43.201.23.80:8080/api/user/signup', {
+    .post('http://3.39.233.168:8080/api/user/signup', {
       email: form.email,
       password: form.password,
       username: form.username,
@@ -224,7 +224,7 @@ const ModalHeader = styled.div`
 `;
 
 const ModalHeaderDiv = styled.div`
-  margin: zero;
+  margin: 0;
   flex: 1;
 `;
 
@@ -250,10 +250,6 @@ const ModalForm = styled.div`
   flex-direction: column;
   padding: 0 96px;
   align-items: center;
-
-  & > h1 {
-    align-items: left;
-  }
 `;
 
 const ModalInput = styled.input.attrs<{ color?: boolean }>({ required: true })`
