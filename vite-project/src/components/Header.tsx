@@ -7,6 +7,8 @@ import SearchModal from "./SearchModal.tsx";
 import {getCookie} from '../utils/Cookies';
 import Signin from "./Signin.tsx";
 import Signup from "./Signup.tsx";
+import Logo from './Logo';
+
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
@@ -35,7 +37,7 @@ const Header: React.FC = () => {
 
     return (
         <HeaderContainer>
-            <Logo onClick={() => navigate('/')}>Airbnb</Logo>
+            <Logo onClick={() => navigate('/')}>내집어때</Logo>
             <Navigation>
                 <SearchButton onClick={() => setShowSearchModal(true)}>
                     <SearchSection><strong>어디든지</strong></SearchSection>
@@ -71,17 +73,11 @@ const Header: React.FC = () => {
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: center;
-  padding: 1.5% 2.5%;
+  padding: 0 2.5%;
   background-color: white;
   border-bottom: 1px solid #EBEBEB;
   width: 100%;
   box-sizing: border-box;
-`;
-
-const Logo = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-  align-self: center;
 `;
 
 const Navigation = styled.div`

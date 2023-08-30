@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {faX} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import axios from 'axios';
+import Logo from './Logo';
 
 interface SignupProps {
     switchToSignin: () => void;
@@ -165,7 +166,7 @@ const Signup: React.FC<SignupProps> = ({switchToSignin, setIsOpen}) => {
                         <ModalHeaderDiv></ModalHeaderDiv>
                     </ModalHeader>
                     <ModalForm>
-                        <ModalH1>내집어때</ModalH1>
+                        <Logo>내집어때</Logo>
                         <ModalInput placeholder='이메일' type='email' onChange={isValidEmail}
                                     color={isValid.isValidEmail}/>
                         <ModalInputMessage
@@ -296,18 +297,6 @@ const ModalInputMessage = styled.p<{ color?: boolean }>`
   width: 380px;
   color: ${(props) => props.color ? 'green' : 'red'};
 `
-
-const ModalH1 = styled.h1`
-  text-align: center;
-  font-family: 'Single Day', cursive;
-  width: 150px;
-  height: 50px;
-  line-height: 50px;
-  background-color: #fc335a;
-  color: white;
-  border-radius: 20px 100px 20px 100px;
-  margin-bottom: 40px;
-`;
 
 const ModalSubmit = styled.button`
   display: block;
