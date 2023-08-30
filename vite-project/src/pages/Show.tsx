@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 type Accommodation = {
     accommodationId: number;
@@ -34,9 +36,10 @@ const Show: React.FC = () => {
                         {accommodation.images[0]?.acmdImageUrl && (
                             <Image src={accommodation.images[0].acmdImageUrl} alt="Accommodation" />
                         )}
-                        <h4>{accommodation.mainAddress}</h4>
-                        <p>Price: ₩{accommodation.price}</p>
-                        <p>Average Rating: {accommodation.ratingAvg}</p>
+                        <CardH4>{accommodation.mainAddress}</CardH4>
+                        <CardP>₩ {accommodation.price} /박</CardP>
+                        <CardP>
+                            <FontAwesomeIcon icon={faStar} /> {accommodation.ratingAvg}</CardP>
                     </Card>
                 ))}
             </Container>
@@ -46,15 +49,14 @@ const Show: React.FC = () => {
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr); // 4개의 열 생성
-  gap: 16px; // 각 항목 사이의 간격
-  padding: 16px;
-  overflow-y: auto; // 세로 스크롤 활성화
-  max-height: 100vh; // 뷰포트 높이를 최대로 설정
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  height: calc(100vh - 180px);
+  overflow: auto;
+  margin-bottom: 80px;
 `;
 
 const Card = styled.div`
-  border: 1px solid #e0e0e0;
   border-radius: 8px;
   margin: 8px;
   padding: 16px;
@@ -62,11 +64,20 @@ const Card = styled.div`
 `;
 
 const Image = styled.img`
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
+  width: 100%;
+  height: 250px;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 8px;
+  background-color: #f0f0f0;
 `;
 
+const CardH4 = styled.h4`
+  margin: 8px 0;
+`;
+
+const CardP = styled.p`
+  margin: 8px 0;
+`;
 
 export default Show;

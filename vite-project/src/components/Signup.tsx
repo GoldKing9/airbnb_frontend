@@ -206,6 +206,7 @@ const ModalContainer = styled.div`
   top: 0;
   left: 0;
   box-sizing: border-box;
+  z-index: 1000;
 `;
 
 const ModalBackdrop = styled.div`
@@ -218,7 +219,6 @@ const ModalBackdrop = styled.div`
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.3);
-  z-index: 9999;
 `
 
 const ModalView = styled.div`
@@ -228,20 +228,18 @@ const ModalView = styled.div`
   padding: 0 0 24px;
   border-radius: 20px;
   background-color: white;
-  z-index: 10000;
 `;
 
 const ModalHeader = styled.div`
   height: 64px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   border-bottom: 1px #ebebeb solid;
 `;
 
 const ModalHeaderDiv = styled.div`
-  margin: 0;
-  flex: 1;
+  margin: 20px;
 `;
 
 const CloseButton = styled.button`

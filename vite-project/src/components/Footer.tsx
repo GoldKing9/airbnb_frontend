@@ -5,9 +5,9 @@ const Footer: React.FC = () => {
     return (
         <FooterContainer>
             <Info>© 2023 내집어때, Inc. All rights reserved</Info>
-            <h3>
+            <FooterH3>
                 <span>Privacy</span> · <span>Terms</span> · <span>Sitemap</span>
-            </h3>
+            </FooterH3>
         </FooterContainer>
     );
 };
@@ -28,6 +28,10 @@ const Info = styled.div`
   font-size: 14px;
   color: #222222;
   margin-top: 10px;
+`;
+
+const FooterH3 = styled.h3`
+  margin: 10px;
 `;
 
 export default Footer;
