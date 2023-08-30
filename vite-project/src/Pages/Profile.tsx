@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ToggleHandler from '../Utils/ToggleHandler';
 import StarRating from '../Utils/StarRating';
+import Host from '../components/Host';
 
 const Profile = () => {
   
@@ -28,6 +29,7 @@ const Profile = () => {
           </ButtonDiv>
         </ContentsContainer>
       </ProfileContainer>
+      <Host/>
     </Container>  
   );
 
@@ -40,7 +42,6 @@ const Container = styled.div`
   width: 100vw;
   height: 630px;
   display: flex;
-  border: 1px black solid;
 `
 
 const ProfileContainer = styled.nav`
@@ -48,7 +49,6 @@ const ProfileContainer = styled.nav`
   height: 630px;
   display: flex;
   flex-direction: column;
-  border-right: 3px #ebebeb solid;
   padding: 0 10px 0 10px;
 `
 
