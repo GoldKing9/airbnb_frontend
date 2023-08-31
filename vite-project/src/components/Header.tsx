@@ -8,6 +8,7 @@ import {getCookie} from '../utils/Cookies';
 import Signin from "./Signin.tsx";
 import Signup from "./Signup.tsx";
 import Logo from './Logo';
+import axios from 'axios';
 
 
 const Header: React.FC = () => {
@@ -35,6 +36,16 @@ const Header: React.FC = () => {
         setShowLoginModal(true);
     }
 
+    const handleLogout = async () => {
+        try {
+            await axios.post('http://3.39.233.168:8080/api/auth/user/logout');
+            document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            navigate('/');
+        } catch (error) {
+            console.error("Error during logout:", error);
+        }
+    };
+
     return (
         <HeaderContainer>
             <Logo onClick={() => navigate('/')}>내집어때</Logo>
@@ -48,10 +59,12 @@ const Header: React.FC = () => {
                     </SearchIconSection>
                 </SearchButton>
                 <HostButton onClick={() => navigate('/Host')}>당신의 공간을 에어비앤비하세요</HostButton>
+                {getCookie("accessToken") ? (
+                    <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+                ) : null}
                 <ProfileButton onClick={() => {
                     const accessToken = getCookie("accessToken");
                     if (accessToken) {
-                        console.log(accessToken);
                         navigate('/Profile');
                     } else {
                         setShowLoginModal(true);
@@ -109,7 +122,7 @@ const ProfileButton = styled.button`
 
   &:focus, &:active {
     outline: none;
-    border: 1px solid gray; // 필요한 경우 테두리 색상도 지정할 수 있습니다.
+    border: 1px solid gray;
   }
 `;
 
@@ -197,12 +210,30 @@ const SearchIcon = styled(FontAwesomeIcon)`
   font-size: 20px;
 `;
 
-
 const HostButton = styled.button`
   background: none;
   border: none;
-  border-radius: 25px; // 원통 모양으로 만들기 위한 반지름 설정
-  padding: 10px 20px; // 가로로 긴 원통 모양을 만들기 위한 패딩 설정
+  border-radius: 25px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 15px;
+
+  &:hover {
+    background-color: #F7F7F7;
+  }
+
+  &:focus, &:active {
+    outline: none;
+    border: 1px solid gray;
+  }
+`;
+
+const LogoutButton = styled.button`
+  background: none;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
   cursor: pointer;
   transition: background-color 0.3s;
   font-size: 15px;
