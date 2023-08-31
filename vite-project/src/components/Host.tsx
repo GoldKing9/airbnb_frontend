@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import HostTab from '../Utils/HostTab';
+import HostTab from '../utils/HostTab';
 
 
 const Host = () => {

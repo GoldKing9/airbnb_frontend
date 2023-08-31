@@ -1,10 +1,11 @@
-import './App.css'
+import "./App.css"
 import {BrowserRouter as Router, Route, Routes, Outlet} from 'react-router-dom';
-import Show from "./pages/Show.tsx";
+import Show from "./pages/Show";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import GlobalStyle from "./GlobalStyle";
 import styled from "styled-components";
+import Profile from "./pages/Profile";
 
 function Layout () {
     return (
@@ -24,6 +25,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Layout/>}>
                         <Route index element={<Show/>}/>
+                        <Route path="/Profile" element={<Profile/>}></Route>
                     </Route>
                 </Routes>
 
