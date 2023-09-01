@@ -10,6 +10,12 @@ const Logo = styled.h1`
   color: white;
   border-radius: 20px 100px 20px 100px;
   margin-bottom: 40px;
+
+  @media (max-width: 480px) {
+    width: 40%;
+    margin-bottom: 20px;
+    justify-content: center;
+  }
 `;
 
 export default Logo;

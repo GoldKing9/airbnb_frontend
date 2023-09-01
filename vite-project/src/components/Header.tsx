@@ -91,6 +91,12 @@ const HeaderContainer = styled.div`
   border-bottom: 1px solid #EBEBEB;
   width: 100%;
   box-sizing: border-box;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+  }
 `;
 
 const Navigation = styled.div`
@@ -99,30 +105,10 @@ const Navigation = styled.div`
   gap: 10px;
   flex-grow: 1;
   justify-content: center;
-`;
 
-
-const ProfileButton = styled.button`
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  gap: 10px;
-  border: 1px solid gray;
-  border-radius: 25px;
-  background-color: transparent;
-  cursor: pointer;
-  transition: box-shadow 0.3s;
-  outline: none;
-
-  &:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-color: gray;
-    outline: none;
-  }
-
-  &:focus, &:active {
-    outline: none;
-    border: 1px solid gray;
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 5px;
   }
 `;
 
@@ -172,6 +158,10 @@ const SearchButton = styled.button`
   margin: auto;
   width: 35%;
 
+  @media (max-width: 480px) {
+    width: 100%;
+  }
+
   &:hover {
     border-color: #DDDDDD;
     outline: none;
@@ -219,8 +209,43 @@ const HostButton = styled.button`
   transition: background-color 0.3s;
   font-size: 15px;
 
+  @media (max-width: 480px) {
+    width: 90%;
+    text-align: center;
+    
+  }
+
   &:hover {
-    background-color: #F7F7F7;
+    color: #999999;
+  }
+
+  &:focus, &:active {
+    outline: none;
+    border: 1px solid gray;
+  }
+`;
+
+const ProfileButton = styled.button`
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  gap: 10px;
+  border: 1px solid gray;
+  border-radius: 25px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+  outline: none;
+  
+  @media (max-width: 480px) {
+    width: 30%;
+    justify-content: center;
+  }
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-color: gray;
+    outline: none;
   }
 
   &:focus, &:active {
@@ -238,6 +263,11 @@ const LogoutButton = styled.button`
   transition: background-color 0.3s;
   font-size: 15px;
 
+  @media (max-width: 480px) {
+    width: 50%;
+    text-align: center;
+  }
+  
   &:hover {
     background-color: #F7F7F7;
   }
