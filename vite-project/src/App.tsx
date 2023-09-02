@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import GlobalStyle from "./GlobalStyle";
 import styled from "styled-components";
 import Profile from "./pages/Profile";
+import Accommodation from "./pages/Accommodation";
 
 function Layout () {
     return (
@@ -26,9 +27,9 @@ function App() {
                     <Route path="/" element={<Layout/>}>
                         <Route index element={<Show/>}/>
                         <Route path="/Profile" element={<Profile/>}></Route>
+                        <Route path="/Accommodation" element={<Accommodation/>}></Route>
                     </Route>
                 </Routes>
-
             </Router>
         </>
     )
