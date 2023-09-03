@@ -2,7 +2,7 @@
 
 
 ## 프로젝트 진행 상황
-![Progress](https://progress-bar.dev/30/?title=Frontendㅤ&width=400&color=D4AF37)
+![Progress](https://progress-bar.dev/45/?title=Frontendㅤ&width=400&color=D4AF37)
 * 레퍼런스 분석
 * 구현할 기능 선정 및 분담
 * 개발환경 셋업
