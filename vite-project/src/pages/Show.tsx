@@ -84,11 +84,11 @@ const Container = styled.div`
   margin-bottom: 80px;
   padding: 0 5em 0 5em;
 
-  @media (max-width: 1900px) {
+  @media (max-width: 2000px) {
     grid-template-columns: repeat(5, 1fr);
   }
   
-  @media (max-width: 1600px) {
+  @media (max-width: 1700px) {
     grid-template-columns: repeat(4, 1fr);
   }
 
@@ -96,8 +96,12 @@ const Container = styled.div`
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 1080px) {
     grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: 670px) {
+    grid-template-columns: repeat(1, 1fr);
   }
 `;
 
