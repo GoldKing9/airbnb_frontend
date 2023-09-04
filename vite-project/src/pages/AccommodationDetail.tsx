@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import { useNavigate, useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import axios from "axios";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faStar, faMedal, faKey, faCar} from '@fortawesome/free-solid-svg-icons';
+
 
 type AccommodationDetail = {
     images: { acmdImageUrl: string }[];
@@ -11,11 +14,15 @@ type AccommodationDetail = {
     bed: number;
     bathroom: number;
     userDescription: string;
+    mainAddress: string;
+    detailAddress: string;
+    ratingAvg: number;
+    reviewCnt: number;
 };
 
 const AccommodationDetail: React.FC = () => {
     const navigate = useNavigate();
-    const { id } = useParams();
+    const {id} = useParams();
     const [detail, setDetail] = useState<AccommodationDetail | null>(null);
 
     useEffect(() => {
@@ -32,6 +39,12 @@ const AccommodationDetail: React.FC = () => {
 
     return (
         <Container>
+            <AddressSection>
+                <Address>{detail.mainAddress} {detail.detailAddress}</Address>
+            </AddressSection>
+            <RatingSection>
+                <FontAwesomeIcon icon={faStar}/> {detail.ratingAvg} · 후기 {detail.reviewCnt}개
+            </RatingSection>
             <ImageContainer>
                 {detail.images.map((image, index) => (
                     <StyledImage key={index} src={image.acmdImageUrl} alt={`Accommodation Image ${index}`}/>
@@ -42,6 +55,27 @@ const AccommodationDetail: React.FC = () => {
                 <Subtitle>
                     최대 인원 {detail.guest}명 · 침실 {detail.bedroom}개 · 침대 {detail.bed}개 · 욕실 {detail.bathroom}개
                 </Subtitle>
+                <SuperHostSection>
+                    <FontAwesomeIcon icon={faMedal}/>
+                    <div>
+                        <p>Jimi Stay님은 슈퍼호스트입니다</p>
+                        <p>슈퍼호스트는 풍부한 경험과 높은 평점을 자랑하며 게스트가 숙소에서 편안히 머무를 수 있도록 최선을 다하는 호스트입니다.</p>
+                    </div>
+                </SuperHostSection>
+                <CheckInSection>
+                    <FontAwesomeIcon icon={faKey}/>
+                    <div>
+                        <p>순조로운 체크인 과정</p>
+                        <p>최근 숙박한 게스트 중 95%가 체크인 과정에 별점 5점을 준 숙소입니다.</p>
+                    </div>
+                </CheckInSection>
+                <ParkingSection>
+                    <FontAwesomeIcon icon={faCar}/>
+                    <div>
+                        <p>무료 주차 혜택을 누리세요</p>
+                        <p>해당 지역에서 무료 주차가 가능한 몇 안 되는 숙소 중 하나입니다.</p>
+                    </div>
+                </ParkingSection>
                 <Description>{detail.userDescription}</Description>
                 <ReviewButton onClick={() => navigate('/Review')}>리뷰 보기</ReviewButton>
             </DetailSection>
@@ -50,27 +84,69 @@ const AccommodationDetail: React.FC = () => {
 };
 
 const Container = styled.div`
-  padding: 20px;
+  padding: 0 20em 0 20em;
+  height: calc(100vh - 300px);
   max-width: 1200px;
   margin: 0 auto;
+  overflow: auto;
+`;
+
+const AddressSection = styled.div`
+  text-align: start;
+`;
+
+const Address = styled.h1`
+  font-weight: bold;
+  margin: 0.25em 0 0.25em 0;
+`;
+
+const RatingSection = styled.h3`
+  color: #000000;
+  margin: 0.5em 0 0.5em 0;
+  text-align: start;
 `;
 
 const ImageContainer = styled.div`
   display: flex;
   gap: 10px;
   overflow-x: auto;
+  align-items: center;
+  justify-content: center;
 `;
 
 const StyledImage = styled.img`
-  width: 300px;
-  height: 200px;
+  width: 80%;
+  height: 80%;
   object-fit: cover;
   border-radius: 8px;
 `;
 
 const DetailSection = styled.div`
   margin-top: 20px;
+  text-align: start;
+  font-size: 20px;
+
+  @media (max-width: 2000px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 1700px) {
+    font-size: 17px;
+  }
+
+  @media (max-width: 1400px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 1080px) {
+    font-size: 15px;
+  }
+
+  @media (max-width: 670px) {
+    font-size: 14px;
+  }
 `;
+
 
 const Title = styled.h2`
   font-size: 24px;
@@ -81,11 +157,69 @@ const Subtitle = styled.p`
   font-size: 16px;
   color: #555;
   margin-top: 10px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1em;
 `;
 
 const Description = styled.p`
   font-size: 18px;
   margin-top: 20px;
+`;
+
+const InfoSection = styled.div`
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+`;
+
+const SuperHostSection = styled(InfoSection)`
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  p {
+    margin: 0;
+
+    &:first-child {
+      font-weight: bold;
+    }
+  }
+`;
+
+const CheckInSection = styled(InfoSection)`
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  p {
+    margin: 0;
+
+    &:first-child {
+      font-weight: bold;
+    }
+  }
+`;
+
+const ParkingSection = styled(InfoSection)`
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  p {
+    margin: 0;
+
+    &:first-child {
+      font-weight: bold;
+    }
+  }
 `;
 
 const ReviewButton = styled.button`

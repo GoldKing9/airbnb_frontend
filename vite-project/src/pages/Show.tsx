@@ -38,9 +38,9 @@ const Show: React.FC = () => {
 
     const handleCardClick = async (accommodationId: number) => {
         try {
-            const response = await axios.get(`http://3.39.233.168:8080/api/accommodation/${accommodationId}`);
+            /*const response = await axios.get(`http://3.39.233.168:8080/api/accommodation/${accommodationId}`);
             console.log(response);
-            setSelectedAccommodation(response.data);
+            setSelectedAccommodation(response.data);*/
             navigate(`/accommodation/${accommodationId}`);
         } catch (error) {
             console.error("Error fetching accommodation detail:", error);
@@ -93,8 +93,6 @@ const Show: React.FC = () => {
                     </div>
                 </Card>
             ))}
-            {selectedAccommodation && <AccommodationDetail />}
-
         </Container>
     );
 };
