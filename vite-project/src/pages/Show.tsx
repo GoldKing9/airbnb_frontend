@@ -7,7 +7,6 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {useNavigate} from 'react-router-dom';
-import AccommodationDetail from "./AccommodationDetail";
 
 type Accommodation = {
     accommodationId: number;
@@ -19,28 +18,21 @@ type Accommodation = {
 
 const Show: React.FC = () => {
     const [results, setResults] = useState<Accommodation[]>([]);
-    const [selectedAccommodation, setSelectedAccommodation] = useState<AccommodationDetail | null>(null);
     const navigate = useNavigate();
 
-
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('http://3.39.233.168:8080/api/accommodation/search');
+        axios.get('http://3.39.233.168:8080/api/accommodation/search')
+            .then(response => {
                 setResults(response.data.results);
-            } catch (error) {
+            })
+            .catch(error => {
                 console.error("Error fetching data:", error);
-            }
-        };
-
-        fetchData();
+            });
     }, []);
+
 
     const handleCardClick = async (accommodationId: number) => {
         try {
-            /*const response = await axios.get(`http://3.39.233.168:8080/api/accommodation/${accommodationId}`);
-            console.log(response);
-            setSelectedAccommodation(response.data);*/
             navigate(`/accommodation/${accommodationId}`);
         } catch (error) {
             console.error("Error fetching accommodation detail:", error);
@@ -52,7 +44,7 @@ const Show: React.FC = () => {
         infinite: true,
         speed: 500,
         slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToScroll: 1,
     };
 
     const preventNavigation = (e: React.MouseEvent) => {

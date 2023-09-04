@@ -1,10 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import axios from "axios";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faStar, faMedal, faKey, faCar} from '@fortawesome/free-solid-svg-icons';
-
+import {
+    faStar,
+    faMedal,
+    faKey,
+    faCar,
+    faWifi,
+    faTv,
+    faWind,
+    faSuitcase,
+    faDoorClosed,
+    faBell,
+    faUmbrellaBeach
+} from '@fortawesome/free-solid-svg-icons';
 
 type AccommodationDetail = {
     images: { acmdImageUrl: string }[];
@@ -21,7 +32,6 @@ type AccommodationDetail = {
 };
 
 const AccommodationDetail: React.FC = () => {
-    const navigate = useNavigate();
     const {id} = useParams();
     const [detail, setDetail] = useState<AccommodationDetail | null>(null);
 
@@ -55,6 +65,7 @@ const AccommodationDetail: React.FC = () => {
                 <Subtitle>
                     최대 인원 {detail.guest}명 · 침실 {detail.bedroom}개 · 침대 {detail.bed}개 · 욕실 {detail.bathroom}개
                 </Subtitle>
+                <Description>{detail.userDescription}</Description>
                 <SuperHostSection>
                     <FontAwesomeIcon icon={faMedal}/>
                     <div>
@@ -76,8 +87,37 @@ const AccommodationDetail: React.FC = () => {
                         <p>해당 지역에서 무료 주차가 가능한 몇 안 되는 숙소 중 하나입니다.</p>
                     </div>
                 </ParkingSection>
-                <Description>{detail.userDescription}</Description>
+                <FacilitiesSection>
+                    <FacilitiesTitle>숙소 편의시설</FacilitiesTitle>
+                    <Facility>
+                        <FontAwesomeIcon icon={faUmbrellaBeach}/> 해변과 인접 - 해변
+                    </Facility>
+                    <Facility>
+                        <FontAwesomeIcon icon={faWifi}/> 무선 인터넷
+                    </Facility>
+                    <Facility>
+                        <FontAwesomeIcon icon={faCar}/> 건물 내 무료 주차
+                    </Facility>
+                    <Facility>
+                        <FontAwesomeIcon icon={faTv}/> TV
+                    </Facility>
+                    <Facility>
+                        <FontAwesomeIcon icon={faWind}/> 에어컨
+                    </Facility>
+                    <Facility>
+                        <FontAwesomeIcon icon={faSuitcase}/> 여행 가방 보관 가능
+                    </Facility>
+                    <Facility>
+                        <FontAwesomeIcon icon={faDoorClosed}/> 냉장고
+                    </Facility>
+                    <Facility>
+                        <FontAwesomeIcon icon={faBell}/> 일산화탄소 경보기
+                    </Facility>
+                </FacilitiesSection>
+
+                {/*
                 <ReviewButton onClick={() => navigate('/Review')}>리뷰 보기</ReviewButton>
+*/}
             </DetailSection>
         </Container>
     );
@@ -85,7 +125,7 @@ const AccommodationDetail: React.FC = () => {
 
 const Container = styled.div`
   padding: 0 20em 0 20em;
-  height: calc(100vh - 300px);
+  height: calc(100vh - 180px);
   max-width: 1200px;
   margin: 0 auto;
   overflow: auto;
@@ -93,6 +133,7 @@ const Container = styled.div`
 
 const AddressSection = styled.div`
   text-align: start;
+  padding-top: 1em;
 `;
 
 const Address = styled.h1`
@@ -125,6 +166,7 @@ const DetailSection = styled.div`
   margin-top: 20px;
   text-align: start;
   font-size: 20px;
+  border-bottom: 1px solid #ccc;
 
   @media (max-width: 2000px) {
     font-size: 18px;
@@ -147,7 +189,6 @@ const DetailSection = styled.div`
   }
 `;
 
-
 const Title = styled.h2`
   font-size: 24px;
   font-weight: bold;
@@ -157,13 +198,13 @@ const Subtitle = styled.p`
   font-size: 16px;
   color: #555;
   margin-top: 10px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 1em;
 `;
 
 const Description = styled.p`
   font-size: 18px;
   margin-top: 20px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
 `;
 
 const InfoSection = styled.div`
@@ -207,6 +248,9 @@ const CheckInSection = styled(InfoSection)`
 `;
 
 const ParkingSection = styled(InfoSection)`
+
+  padding-bottom: 20px;
+
   div {
     display: flex;
     flex-direction: column;
@@ -221,6 +265,28 @@ const ParkingSection = styled(InfoSection)`
     }
   }
 `;
+
+const FacilitiesSection = styled.div`
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+  padding-bottom: 50px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+
+`;
+
+const FacilitiesTitle = styled.h3`
+  font-weight: bold;
+  grid-column: span 2;
+`;
+
+const Facility = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
 
 const ReviewButton = styled.button`
   margin-top: 20px;
