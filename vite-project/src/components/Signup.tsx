@@ -294,6 +294,7 @@ const ModalInputMessage = styled.p<{ color?: boolean }>`
   font-family: 'Single Day', cursive;
   width: 380px;
   color: ${(props) => props.color ? 'green' : 'red'};
+  text-align: start;
 `
 
 const ModalSubmit = styled.button`
