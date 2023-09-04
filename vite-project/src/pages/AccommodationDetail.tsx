@@ -62,10 +62,10 @@ const AccommodationDetail: React.FC = () => {
             </ImageContainer>
             <DetailSection>
                 <Title>{detail.username} 님이 호스팅하는 부티크 호텔의 객실</Title>
+                <Description>{detail.userDescription}</Description>
                 <Subtitle>
                     최대 인원 {detail.guest}명 · 침실 {detail.bedroom}개 · 침대 {detail.bed}개 · 욕실 {detail.bathroom}개
                 </Subtitle>
-                <Description>{detail.userDescription}</Description>
                 <SuperHostSection>
                     <FontAwesomeIcon icon={faMedal}/>
                     <div>
@@ -158,7 +158,7 @@ const ImageContainer = styled.div`
 const StyledImage = styled.img`
   width: 80%;
   height: 80%;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 8px;
 `;
 
@@ -198,13 +198,13 @@ const Subtitle = styled.p`
   font-size: 16px;
   color: #555;
   margin-top: 10px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ccc;
 `;
 
 const Description = styled.p`
   font-size: 18px;
   margin-top: 20px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 20px;
 `;
 
 const InfoSection = styled.div`
