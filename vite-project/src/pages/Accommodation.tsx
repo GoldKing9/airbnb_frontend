@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import AddressHostInfo from '../components/AddressHostInfo';
 import ImageInfo from '../components/ImageInfo';
 import AccommodationOption from '../components/AccommodationOption';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { useState } from 'react';
+import { getCookie } from '../utils/Cookies';
+import { useNavigate } from 'react-router-dom';
 
 interface AcmdInfo {
   acmdName: string;
@@ -25,7 +27,7 @@ interface AcmdOptions {
 
 const Accommodation = () => {
   
-  const [showImages, setShowImages] = useState<string[]>([]);
+  const [showImages, setShowImages] = useState<File[]>([]);
   
     const [space, setSpace] = useState<Space>({
     address: '',
@@ -46,30 +48,53 @@ const Accommodation = () => {
     bathroom: 0
   })
 
+  const navigate = useNavigate();
+
   const handleSubmit = async () => {
   
     const formData = new FormData();
 
-    showImages.forEach((imageUrl, index) => {
-      formData.append(`image${index + 1}`, imageUrl);
+    const requestObject = {
+      mainAddress: space.address,
+      detailAddress: detailAddress,
+      acmdName: acmdInfo.acmdName,
+      acmdDescription: acmdInfo.acmdDescription,
+      price: options.price.toString(),
+      guest: options.guest.toString(),
+      bedroom: options.bedroom.toString(),
+      bed: options.bed.toString(),
+      bathroom: options.bathroom.toString()
+    };
+
+    const jsonData = JSON.stringify(requestObject);
+
+    formData.append('request', new Blob([jsonData], { type: 'application/json' }));
+
+    showImages.forEach((imageUrl) => {
+      formData.append('images', imageUrl);
     });
 
-    formData.append('address', space.address);
-    formData.append('detailAddress', detailAddress);
-    formData.append('acmdName', acmdInfo.acmdName);
-    formData.append('acmdDescription', acmdInfo.acmdDescription);
-    formData.append('price', options.price.toString());
-    formData.append('guest', options.guest.toString());
-    formData.append('bedroom', options.bedroom.toString());
-    formData.append('bed', options.bed.toString());
-    formData.append('bathroom', options.bathroom.toString());
+    const accessToken: string | undefined = getCookie('accessToken');
+
+    if(!accessToken) {
+      console.error("access 토큰이 쿠키내에 존재하지 않습니다.");
+    }
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        'Authorization': accessToken,
+        'Content-Type': 'multipart/form-data',
+      }
+    }
 
     await axios.post(
       'http://3.39.233.168:8080/api/auth/accommodation',
-      formData
+      formData,
+      config
     ).then((res) => {
-      console.log(res.data);
+      console.log(res);
       alert("숙소가 정상적으로 등록되었습니다.")
+      navigate('/Profile');
     }).catch((error)=> {
       console.error(error);
     })

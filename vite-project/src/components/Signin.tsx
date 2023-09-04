@@ -59,7 +59,7 @@ const Signin: React.FC<SigninProps> = ({switchToSignup, setIsOpen}) => {
                 const accessToken = res.headers.authorization;
 
                 if (accessToken) {
-                    setCookie("accessToken", `JWT ${accessToken}`, {
+                    setCookie("accessToken", accessToken, {
                         path: "/",
                         sameSite: "strict",
                     });

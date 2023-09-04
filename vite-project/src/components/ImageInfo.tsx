@@ -3,8 +3,8 @@ import {faX} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 interface ImageInfoProps {
-  showImages: string[];
-  setShowImages: React.Dispatch<React.SetStateAction<string[]>>;
+  showImages: File[];
+  setShowImages: React.Dispatch<React.SetStateAction<File[]>>;
 }
 
 const ImageInfo: React.FC<ImageInfoProps> = ({showImages, setShowImages }) => {
@@ -18,15 +18,15 @@ const ImageInfo: React.FC<ImageInfoProps> = ({showImages, setShowImages }) => {
 
     if (imageLists !== null) {
       for(let i=0; i<imageLists.length; i++) {
-        const currentImageUrl: string = URL.createObjectURL(imageLists[i]);
-        imageUrlLists.push(currentImageUrl);
+        const currentImage: File = imageLists[i];
+        imageUrlLists.push(currentImage);
       }
   
       if(imageUrlLists.length > 12) {
         imageUrlLists = imageUrlLists.slice(0, 12);
         alert("사진은 최대 12장까지만 등록할 수 있습니다.")
       }
-  
+      console.log(imageUrlLists);
       setShowImages(imageUrlLists);
     }
   }
@@ -43,7 +43,7 @@ const ImageInfo: React.FC<ImageInfoProps> = ({showImages, setShowImages }) => {
         <ImageGrid>
           {showImages.map((image, id) => (
             <ImageCheckDiv key={id}>
-              <ImageImg src={image} alt={`${image}-${id}`} width={100} height={100}/>
+              <ImageImg src={URL.createObjectURL(image)} alt={`${image}-${id}`} width={100} height={100}/>
               <DeleteButton onClick= {() => handleDeleteImage(id)}>
                 <XFontAwesomeIcon icon={faX}/>
               </DeleteButton>          
