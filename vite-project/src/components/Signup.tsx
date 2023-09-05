@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {faX} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import axios from 'axios';
+import Logo from './Logo';
 
 interface SignupProps {
     switchToSignin: () => void;
@@ -165,7 +166,7 @@ const Signup: React.FC<SignupProps> = ({switchToSignin, setIsOpen}) => {
                         <ModalHeaderDiv></ModalHeaderDiv>
                     </ModalHeader>
                     <ModalForm>
-                        <ModalH1>내집어때</ModalH1>
+                        <Logo>내집어때</Logo>
                         <ModalInput placeholder='이메일' type='email' onChange={isValidEmail}
                                     color={isValid.isValidEmail}/>
                         <ModalInputMessage
@@ -205,6 +206,7 @@ const ModalContainer = styled.div`
   top: 0;
   left: 0;
   box-sizing: border-box;
+  z-index: 1000;
 `;
 
 const ModalBackdrop = styled.div`
@@ -217,7 +219,6 @@ const ModalBackdrop = styled.div`
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.3);
-  z-index: 9999;
 `
 
 const ModalView = styled.div`
@@ -227,20 +228,18 @@ const ModalView = styled.div`
   padding: 0 0 24px;
   border-radius: 20px;
   background-color: white;
-  z-index: 10000;
 `;
 
 const ModalHeader = styled.div`
   height: 64px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   border-bottom: 1px #ebebeb solid;
 `;
 
 const ModalHeaderDiv = styled.div`
-  margin: 0;
-  flex: 1;
+  margin: 20px;
 `;
 
 const CloseButton = styled.button`
@@ -297,18 +296,6 @@ const ModalInputMessage = styled.p<{ color?: boolean }>`
   color: ${(props) => props.color ? 'green' : 'red'};
   text-align: start;
 `
-
-const ModalH1 = styled.h1`
-  text-align: center;
-  font-family: 'Single Day', cursive;
-  width: 150px;
-  height: 50px;
-  line-height: 50px;
-  background-color: #fc335a;
-  color: white;
-  border-radius: 20px 100px 20px 100px;
-  margin-bottom: 40px;
-`;
 
 const ModalSubmit = styled.button`
   display: block;

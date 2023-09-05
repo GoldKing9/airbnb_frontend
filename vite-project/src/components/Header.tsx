@@ -7,6 +7,9 @@ import SearchModal from "./SearchModal.tsx";
 import {getCookie} from '../utils/Cookies';
 import Signin from "./Signin.tsx";
 import Signup from "./Signup.tsx";
+import Logo from './Logo';
+import axios from 'axios';
+
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
@@ -33,9 +36,19 @@ const Header: React.FC = () => {
         setShowLoginModal(true);
     }
 
+    const handleLogout = async () => {
+        try {
+            await axios.post('http://3.39.233.168:8080/api/auth/user/logout');
+            document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            navigate('/');
+        } catch (error) {
+            console.error("Error during logout:", error);
+        }
+    };
+
     return (
         <HeaderContainer>
-            <Logo onClick={() => navigate('/')}>Airbnb</Logo>
+            <Logo onClick={() => navigate('/')}>내집어때</Logo>
             <Navigation>
                 <SearchButton onClick={() => setShowSearchModal(true)}>
                     <SearchSection><strong>어디든지</strong></SearchSection>
@@ -46,10 +59,12 @@ const Header: React.FC = () => {
                     </SearchIconSection>
                 </SearchButton>
                 <HostButton onClick={() => navigate('/Host')}>당신의 공간을 에어비앤비하세요</HostButton>
+                {getCookie("accessToken") ? (
+                    <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+                ) : null}
                 <ProfileButton onClick={() => {
                     const accessToken = getCookie("accessToken");
                     if (accessToken) {
-                        console.log(accessToken);
                         navigate('/Profile');
                     } else {
                         setShowLoginModal(true);
@@ -71,17 +86,17 @@ const Header: React.FC = () => {
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: center;
-  padding: 1.5% 2.5%;
+  padding: 0 2.5%;
   background-color: white;
   border-bottom: 1px solid #EBEBEB;
   width: 100%;
   box-sizing: border-box;
-`;
 
-const Logo = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-  align-self: center;
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+  }
 `;
 
 const Navigation = styled.div`
@@ -90,30 +105,10 @@ const Navigation = styled.div`
   gap: 10px;
   flex-grow: 1;
   justify-content: center;
-`;
 
-
-const ProfileButton = styled.button`
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  gap: 10px;
-  border: 1px solid gray;
-  border-radius: 25px;
-  background-color: transparent;
-  cursor: pointer;
-  transition: box-shadow 0.3s;
-  outline: none;
-
-  &:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-color: gray;
-    outline: none;
-  }
-
-  &:focus, &:active {
-    outline: none;
-    border: 1px solid gray; // 필요한 경우 테두리 색상도 지정할 수 있습니다.
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 5px;
   }
 `;
 
@@ -163,6 +158,10 @@ const SearchButton = styled.button`
   margin: auto;
   width: 35%;
 
+  @media (max-width: 480px) {
+    width: 100%;
+  }
+
   &:hover {
     border-color: #DDDDDD;
     outline: none;
@@ -201,16 +200,74 @@ const SearchIcon = styled(FontAwesomeIcon)`
   font-size: 20px;
 `;
 
-
 const HostButton = styled.button`
   background: none;
   border: none;
-  border-radius: 25px; // 원통 모양으로 만들기 위한 반지름 설정
-  padding: 10px 20px; // 가로로 긴 원통 모양을 만들기 위한 패딩 설정
+  border-radius: 25px;
+  padding: 10px 20px;
   cursor: pointer;
   transition: background-color 0.3s;
   font-size: 15px;
 
+  @media (max-width: 480px) {
+    width: 90%;
+    text-align: center;
+    
+  }
+
+  &:hover {
+    color: #999999;
+  }
+
+  &:focus, &:active {
+    outline: none;
+    border: 1px solid gray;
+  }
+`;
+
+const ProfileButton = styled.button`
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  gap: 10px;
+  border: 1px solid gray;
+  border-radius: 25px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+  outline: none;
+  
+  @media (max-width: 480px) {
+    width: 30%;
+    justify-content: center;
+  }
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-color: gray;
+    outline: none;
+  }
+
+  &:focus, &:active {
+    outline: none;
+    border: 1px solid gray;
+  }
+`;
+
+const LogoutButton = styled.button`
+  background: none;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 15px;
+
+  @media (max-width: 480px) {
+    width: 50%;
+    text-align: center;
+  }
+  
   &:hover {
     background-color: #F7F7F7;
   }
