@@ -31,7 +31,7 @@ const Show: React.FC = () => {
     }, []);
 
 
-    const handleCardClick = async (accommodationId: number) => {
+    const handleCardClick = (accommodationId: number) => {
         try {
             navigate(`/accommodation/${accommodationId}`);
         } catch (error) {
