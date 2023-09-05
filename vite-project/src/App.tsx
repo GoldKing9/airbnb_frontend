@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Routes, Outlet} from 'react-router-dom';
 import Show from "./pages/Show";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import AccommodationDetail from "./pages/AccommodationDetail";
 import GlobalStyle from "./GlobalStyle";
 import styled from "styled-components";
 import Profile from "./pages/Profile";
@@ -25,10 +26,10 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Layout/>}>
                         <Route index element={<Show/>}/>
+                        <Route path="accommodation/:id" element={<AccommodationDetail/>}></Route>
                         <Route path="/Profile" element={<Profile/>}></Route>
                     </Route>
                 </Routes>
-
             </Router>
         </>
     )
@@ -37,9 +38,8 @@ function App() {
 const Container = styled('div')({
     display: 'flex',
     flexDirection: 'column',
-    width: '100vw',  // 뷰포트의 너비로 설정
-    height: '100vh', // 뷰포트의 높이로 설정
-    justifyContent: 'space-between' // 중간의 내용 영역과 Footer 사이에 공간을 최대로
+    width: '100vw',
+    height: '100vh',
 });
 
 

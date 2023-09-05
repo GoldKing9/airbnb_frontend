@@ -152,14 +152,34 @@ const SearchButton = styled.button`
   border-radius: 25px;
   background-color: transparent;
   cursor: pointer;
-  font-size: 14px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   outline: none;
   margin: auto;
   width: 35%;
+  font-size: 20px;
 
   @media (max-width: 480px) {
     width: 100%;
+  }
+
+  @media (max-width: 2000px) {
+    font-size: 19px;  // 2000px 이하일 때의 폰트 크기
+  }
+
+  @media (max-width: 1700px) {
+    font-size: 18px;  // 1700px 이하일 때의 폰트 크기
+  }
+
+  @media (max-width: 1400px) {
+    font-size: 17px;  // 1400px 이하일 때의 폰트 크기
+  }
+
+  @media (max-width: 1080px) {
+    font-size: 16px;  // 1080px 이하일 때의 폰트 크기
+  }
+
+  @media (max-width: 670px) {
+    font-size: 15px;  // 670px 이하일 때의 폰트 크기
   }
 
   &:hover {
@@ -207,12 +227,32 @@ const HostButton = styled.button`
   padding: 10px 20px;
   cursor: pointer;
   transition: background-color 0.3s;
-  font-size: 15px;
+  font-size: 20px;
 
   @media (max-width: 480px) {
     width: 90%;
     text-align: center;
-    
+  }
+
+
+  @media (max-width: 2000px) {
+    font-size: 19px;  // 2000px 이하일 때의 폰트 크기
+  }
+
+  @media (max-width: 1700px) {
+    font-size: 18px;  // 1700px 이하일 때의 폰트 크기
+  }
+
+  @media (max-width: 1400px) {
+    font-size: 17px;  // 1400px 이하일 때의 폰트 크기
+  }
+
+  @media (max-width: 1080px) {
+    font-size: 16px;  // 1080px 이하일 때의 폰트 크기
+  }
+
+  @media (max-width: 670px) {
+    font-size: 15px;  // 670px 이하일 때의 폰트 크기
   }
 
   &:hover {
