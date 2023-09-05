@@ -68,21 +68,14 @@ const Show: React.FC = () => {
                             ))}
                         </StyledSlider>
                     )}
-                    <div
-                        style={{
-                            width: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "flex-start",
-                            marginLeft: 16
-                        }}
-                    >
+                    <CardContent>
                         <CardH4>{accommodation.mainAddress}</CardH4>
                         <CardP>₩ {accommodation.price} /박</CardP>
                         <CardP>
                             <FontAwesomeIcon icon={faStar}/> {accommodation.ratingAvg}
                         </CardP>
-                    </div>
+                    </CardContent>
+
                 </Card>
             ))}
         </Container>
@@ -164,6 +157,14 @@ const StyledSlider = styled(Slider)`
   @media (max-width: 480px) {
     width: 150px;
   }
+`;
+
+const CardContent = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 16px;
 `;
 
 const CardH4 = styled.h4`
