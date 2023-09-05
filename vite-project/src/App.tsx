@@ -9,6 +9,7 @@ import styled from "styled-components";
 import Profile from "./pages/Profile";
 import Accommodation from "./pages/Accommodation";
 
+
 function Layout () {
     return (
         <Container>

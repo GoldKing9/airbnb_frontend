@@ -58,7 +58,7 @@ const Header: React.FC = () => {
                         <SearchIcon icon={faSearch}/>
                     </SearchIconSection>
                 </SearchButton>
-                <HostButton onClick={() => navigate('/Host')}>당신의 공간을 에어비앤비하세요</HostButton>
+                <HostButton onClick={() => navigate('/Accommodation')}>당신의 공간을 에어비앤비하세요</HostButton>
                 {getCookie("accessToken") ? (
                     <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
                 ) : null}

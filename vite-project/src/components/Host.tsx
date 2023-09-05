@@ -1,22 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 import HostTab from '../utils/HostTab';
+import {useNavigate} from 'react-router-dom';
 
 
 const Host = () => {
-  return (
-    <HostContainer>
-      <HostingDiv>
-        <HostH1>나의 공간을 Hosting하고 수익을 창출해 보세요!</HostH1>
-        <HostingButton>숙박 등록</HostingButton>
-      </HostingDiv>
-      <HostingAdminDiv>
-        <HostingAdminH1>나의 숙소를 손쉽게 관리해 보세요!</HostingAdminH1>
-        <HostTab></HostTab>
-      </HostingAdminDiv>
-    </HostContainer>
-    
-  );
+
+    const navigate = useNavigate();
+    return (
+        <HostContainer>
+            <HostingDiv>
+                <HostH1>나의 공간을 Hosting하고 수익을 창출해 보세요!</HostH1>
+                <HostingButton onClick={() => navigate('/Accommodation')}>숙박 등록</HostingButton>
+            </HostingDiv>
+            <HostingAdminDiv>
+                <HostingAdminH1>나의 숙소를 손쉽게 관리해 보세요!</HostingAdminH1>
+                <HostTab></HostTab>
+            </HostingAdminDiv>
+        </HostContainer>
+
+    );
 };
 
 export default Host;
@@ -30,7 +33,7 @@ const HostContainer = styled.section`
   flex-direction: column;
   align-items: center;
   border-radius: 40px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 `
 const HostingDiv = styled.div`
   height: 100px;
@@ -54,7 +57,8 @@ const HostingButton = styled.button`
   margin-top: 50px;
   margin-left: 50px;
   font-weight: bolder;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 `
 
 const HostingAdminDiv = styled.div`

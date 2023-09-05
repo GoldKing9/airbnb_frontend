@@ -71,6 +71,7 @@ const TabMenu = styled.ul`
     color: #fc335a;
     border: 2px #fc335a solid;
     font-size: 14px;
+    cursor: pointer;
   }
 
   .focused {

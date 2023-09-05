@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 const StarRating = () => {
   
-  const average = 4.43;
-  const commentCnt = 45;
+  const average = 0;   // 4.43
+  const commentCnt = 0;    // 45
 
   const STAR_INDEX_ARR = ['1', '2', '3', '4', '5'];
   const [rating, setRating] = useState([0, 0, 0, 0, 0]);

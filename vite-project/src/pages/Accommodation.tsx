@@ -138,7 +138,7 @@ export default Accommodation;
 
 const AccommodationContainer = styled.div`
   width: 100%;
-  height: calc(100% - 160px);
+  height: calc(100vh - 180px);
   padding: 0;
 `
 
